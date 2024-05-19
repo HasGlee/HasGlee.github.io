@@ -1,9 +1,9 @@
-const API_KEY = 'M0YChlhRsq2DNo414Hp3ADsiXo2NdE6Y';
+const API_KEY = "kN2ylncfHWAyc5h1eVgVJzJvWvSyKHV4";
 
-const currentTempElement = document.getElementById('current-temp');
-const minTempEl = document.getElementById('min-temp');
-const maxTempEl = document.getElementById('max-temp');
-const precEl = document.getElementById('prec');
+const currentTempElement = document.getElementById("current-temp");
+const minTempEl = document.getElementById("min-temp");
+const maxTempEl = document.getElementById("max-temp");
+const precEl = document.getElementById("prec");
 
 navigator.geolocation.watchPosition(async (position) => {
   const { latitude: lat, longitude: long } = position.coords;
@@ -15,19 +15,19 @@ navigator.geolocation.watchPosition(async (position) => {
   minTempEl.innerText = `${weatherData.daily.temperature_2m_min[0]} ${weatherData.daily_units.temperature_2m_min}`;
   maxTempEl.innerText = `${weatherData.daily.temperature_2m_max[0]} ${weatherData.daily_units.temperature_2m_max}`;
   precEl.innerText = `${weatherData.current.precipitation} ${weatherData.current_units.precipitation}`;
-  const reverseUrl = new URL('/v2/reverse', 'https://api.geocodify.com');
-  reverseUrl.searchParams.set('api_key', API_KEY);
-  reverseUrl.searchParams.set('lng', long);
-  reverseUrl.searchParams.set('lat', lat);
+  const reverseUrl = new URL("/v2/reverse", "https://api.geocodify.com");
+  reverseUrl.searchParams.set("api_key", API_KEY);
+  reverseUrl.searchParams.set("lng", long);
+  reverseUrl.searchParams.set("lat", lat);
   const response = await fetch(reverseUrl);
   if (response.ok) {
-    const geoData = await response.json()
+    const geoData = await response.json();
     console.log(geoData);
     geoData.response.features.sort((a, b) => {
       return a.properties.distance - b.properties.distance;
     });
-    document.getElementById('city').innerText = geoData.response.features[0].properties.name;
-
+    document.getElementById("city").innerText =
+      geoData.response.features[0].properties.name;
   }
 });
 async function getWeather(lat, long) {
@@ -42,4 +42,4 @@ async function getWeather(lat, long) {
   if (response.ok) {
     return response.json();
   } else throw new Error("Network Error");
-};
+}
